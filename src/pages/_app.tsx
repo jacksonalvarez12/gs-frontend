@@ -1,10 +1,12 @@
-import { AuthService } from '@/services/firebase/auth-service';
+import {AuthService} from '@/services/firebase/auth-service';
 import '@/styles/globals.css';
-import { FirebaseApp, initializeApp } from '@firebase/app';
-import { Auth, UserCredential, getAuth } from '@firebase/auth';
+import {FirebaseApp, initializeApp} from '@firebase/app';
+import {Auth, UserCredential, getAuth} from '@firebase/auth';
+import {Firestore, getFirestore} from '@firebase/firestore';
+import {Functions, getFunctions} from '@firebase/functions';
 import Image from 'next/image';
-import { useMemo, useState } from 'react';
-import { images } from '../../public/images';
+import {useMemo, useState} from 'react';
+import {images} from '../../public/images';
 
 export default function App() {
     console.log('Initializing firebase app');
@@ -22,6 +24,8 @@ export default function App() {
     // Initialize Firebase
     const app: FirebaseApp = initializeApp(firebaseConfig);
     const auth: Auth = getAuth(app);
+    const functions: Functions = getFunctions(app);
+    const firestore: Firestore = getFirestore(app);
     console.log(`Initialized Firebase app`);
 
     // Deal with google user

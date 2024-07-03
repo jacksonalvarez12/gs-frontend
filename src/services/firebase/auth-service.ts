@@ -9,14 +9,9 @@ import {
 
 export class AuthService {
     static signInWithGoogle = (
-        auth: Auth | undefined,
+        auth: Auth,
         setGoogleUser: (user: UserCredential['user'] | undefined) => void
     ): void => {
-        if (!auth) {
-            console.log('No auth object in signInWithGoogle');
-            return;
-        }
-
         signInWithPopup(auth, new GoogleAuthProvider())
             .then(result => {
                 if (!result?.user) {
@@ -45,14 +40,9 @@ export class AuthService {
     };
 
     static signOut = (
-        auth: Auth | undefined,
+        auth: Auth,
         setGoogleUser: (user: UserCredential['user'] | undefined) => void
     ): void => {
-        if (!auth) {
-            console.log('No auth object in signOut');
-            return;
-        }
-
         signOut(auth)
             .then(result => {
                 console.log(
@@ -67,14 +57,9 @@ export class AuthService {
     };
 
     static deleteUser = (
-        auth: Auth | undefined,
+        auth: Auth,
         setGoogleUser: (user: UserCredential['user'] | undefined) => void
     ): void => {
-        if (!auth) {
-            console.log('No auth object in deleteUser');
-            return;
-        }
-
         if (!auth.currentUser) {
             console.log(
                 `No current user in auth object!, auth: ${JSON.stringify(
