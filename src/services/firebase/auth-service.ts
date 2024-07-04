@@ -1,18 +1,15 @@
 import {
     Auth,
     GoogleAuthProvider,
-    UserCredential,
     deleteUser,
+    getAuth,
     signInWithPopup,
     signOut,
 } from '@firebase/auth';
 
 export class AuthService {
-    static signInWithGoogle = (
-        auth: Auth,
-        setGoogleUser: (user: UserCredential['user'] | undefined) => void
-    ): void => {
-        signInWithPopup(auth, new GoogleAuthProvider())
+    static signInWithGoogle = (): void => {
+        signInWithPopup(getAuth(), new GoogleAuthProvider())
             .then(result => {
                 if (!result?.user) {
                     throw Error(
@@ -23,8 +20,6 @@ export class AuthService {
                         )}`
                     );
                 }
-
-                setGoogleUser(result.user);
             })
             .catch(error => {
                 console.log(
@@ -34,32 +29,24 @@ export class AuthService {
                         2
                     )}`
                 );
-
-                return undefined;
             });
     };
 
-    static signOut = (
-        auth: Auth,
-        setGoogleUser: (user: UserCredential['user'] | undefined) => void
-    ): void => {
-        signOut(auth)
+    static signOut = (): void => {
+        signOut(getAuth())
             .then(result => {
                 console.log(
                     `Sign out result: ${JSON.stringify(result, null, 2)}`
                 );
-
-                setGoogleUser(undefined);
             })
             .catch(err => {
                 console.log(`Sign out error: ${JSON.stringify(err, null, 2)}`);
             });
     };
 
-    static deleteUser = (
-        auth: Auth,
-        setGoogleUser: (user: UserCredential['user'] | undefined) => void
-    ): void => {
+    static deleteUser = (): void => {
+        const auth: Auth = getAuth();
+
         if (!auth.currentUser) {
             console.log(
                 `No current user in auth object!, auth: ${JSON.stringify(
@@ -76,8 +63,6 @@ export class AuthService {
                 console.log(
                     `Delete user result: ${JSON.stringify(result, null, 2)}`
                 );
-
-                setGoogleUser(undefined);
             })
             .catch(err => {
                 console.log(
