@@ -1,12 +1,12 @@
 import {CreateAccountReq, CreateAccountRes} from '@/types/function-requests';
-import {DBUser} from '@/types/user';
+import {DbUser} from '@/types/user';
 import {getFunctions, httpsCallable} from '@firebase/functions';
 
 export class FunctionsService {
     static async createAccount(
         displayName: string,
         email: string
-    ): Promise<DBUser | undefined> {
+    ): Promise<DbUser | undefined> {
         const request: CreateAccountReq = {displayName, email};
 
         return httpsCallable(

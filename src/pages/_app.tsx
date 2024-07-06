@@ -1,8 +1,10 @@
+import {Button} from '@/components/button';
+import {DeleteAcctButton} from '@/components/delete-acct-button';
 import {AuthService} from '@/services/firebase/auth-service';
-import {DBService} from '@/services/firebase/db-service';
+import {DbService} from '@/services/firebase/db-service';
 import {FunctionsService} from '@/services/firebase/functions-service';
 import '@/styles/globals.css';
-import {DBUser} from '@/types/user';
+import {DbUser} from '@/types/user';
 import {FirebaseApp, initializeApp} from '@firebase/app';
 import {UserCredential, getAuth, onAuthStateChanged} from '@firebase/auth';
 import Image from 'next/image';
@@ -28,7 +30,7 @@ export default function App() {
         UserCredential['user'] | undefined
     >(undefined);
 
-    const [dbUser, setDbUser] = useState<DBUser | undefined>(undefined);
+    const [dbUser, setDbUser] = useState<DbUser | undefined>(undefined);
 
     // Auth logic
     onAuthStateChanged(getAuth(app), async user => {
@@ -37,15 +39,15 @@ export default function App() {
 
     // Control db user
     useMemo(async () => {
-        const dbUser: DBUser | undefined = googleUser?.uid
-            ? await DBService.getUser(googleUser.uid)
+        const dbUser: DbUser | undefined = googleUser?.uid
+            ? await DbService.getUser(googleUser.uid)
             : undefined;
         if (googleUser) {
             if (dbUser) {
                 setDbUser(dbUser);
             } else {
                 // Create Account Flow
-                const newDbUser: DBUser | undefined =
+                const newDbUser: DbUser | undefined =
                     await FunctionsService.createAccount(
                         googleUser.displayName || 'Empty Name',
                         googleUser.email || 'Empty Email'
@@ -55,64 +57,59 @@ export default function App() {
         } else {
             setDbUser(undefined);
         }
-    }, [googleUser?.uid]);
+    }, [googleUser]);
 
-    const renderContentByAuth = () => {
+    const renderUserContent = () => {
+        console.log(`Rendering user content...`);
         if (!googleUser) {
-            return (
-                <div className='flex flex-row items-center justify-items-center border gap-2'>
-                    <button onClick={() => AuthService.signInWithGoogle()}>
-                        <p>{'Sign in with Google'}</p>
-                    </button>
-                </div>
-            );
-        } else {
-            return (
-                <div className='flex flex-col items-center border gap-2'>
-                    <p>{`Hello ${googleUser.displayName}, email: ${googleUser.email}`}</p>
-                    <div className='flex flex-row items-center justify-items-center gap-2'>
-                        <button onClick={() => AuthService.signOut()}>
-                            <p>{'Log Out'}</p>
-                        </button>
-                        <button
-                            onClick={() => {
-                                FunctionsService.deleteAccount().then(() => {
-                                    console.log(
-                                        `Deleted account, now deleting auth...`
-                                    );
-                                    AuthService.deleteUser();
-                                });
-                            }}>
-                            <p>{'Delete My Account'}</p>
-                        </button>
-                    </div>
-                    <p className='self-start mt-20'>{`DB user:\n${JSON.stringify(
-                        dbUser,
-                        null,
-                        2
-                    )}`}</p>
-                    <p className='self-start mt-20'>{`Google user:\n${JSON.stringify(
-                        googleUser,
-                        null,
-                        2
-                    )}`}</p>
-                </div>
-            );
+            console.log(`No user in renderUserContent, returning null...`);
+            return null;
         }
+
+        return (
+            <section className='flex flex-col items-center gap-2 w-full bg-gray-900 p-10 mt-5'>
+                {/* Account Info */}
+                <div className='flex flex-row items-center gap-4 w-full'>
+                    <p className=''>{`Username: ${googleUser.displayName}`}</p>
+                    <div className='flex flex-grow flex-row items-center justify-end'>
+                        <DeleteAcctButton />
+                        <div className='ml-4'>
+                            <Button
+                                onPress={AuthService.signOut}
+                                text={'Sign Out'}
+                            />
+                        </div>
+                    </div>
+                </div>
+                {/* Group Info */}
+            </section>
+        );
     };
 
     return (
-        <main className={`flex flex-col p-4 border`}>
-            <div className='flex flex-row items-center justify-items-center border gap-2'>
+        <main
+            className={`sm:px-[5%] md:px-[10%], lg:px-[17%] flex flex-col items-center mt-10`}>
+            <header className='flex flex-col items-center'>
                 <Image
                     src={images.dawgs}
                     alt='Georgia football logo'
-                    width={120}
+                    className='sm:w-[50%] md:w-[30%] lg:w-[20%]'
                     priority
                 />
-                <p>{'By Jackson Alvarez'}</p>
-            </div>
-            <article>{renderContentByAuth()}</article>
+                <span className='text-2xl mt-10'>{'Spotify Groups'}</span>
+                <p className='text-sm mt-4 mb-4'>{'By Jackson Alvarez'}</p>
+            </header>
+            {googleUser ? (
+                renderUserContent()
+            ) : (
+                <div className='mt-10'>
+                    <Button
+                        onPress={AuthService.signInWithGoogle}
+                        text={'Sign in with Google'}
+                        size='lg'
+                    />
+                </div>
+            )}
         </main>
     );
 }

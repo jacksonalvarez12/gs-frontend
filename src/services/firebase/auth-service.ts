@@ -8,8 +8,8 @@ import {
 } from '@firebase/auth';
 
 export class AuthService {
-    static signInWithGoogle = (): void => {
-        signInWithPopup(getAuth(), new GoogleAuthProvider())
+    static signInWithGoogle = async (): Promise<void> => {
+        return signInWithPopup(getAuth(), new GoogleAuthProvider())
             .then(result => {
                 if (!result?.user) {
                     throw Error(
@@ -68,6 +68,14 @@ export class AuthService {
                 console.log(
                     `Delete user error: ${JSON.stringify(err, null, 2)}`
                 );
+
+                if (
+                    (err as Record<string, unknown>)?.code ===
+                    'auth/requires-recent-login'
+                ) {
+                    console.log('Caught and trying to resignin');
+                    AuthService.signInWithGoogle().then(AuthService.deleteUser);
+                }
             });
     };
 }

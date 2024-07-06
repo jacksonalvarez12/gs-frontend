@@ -1,4 +1,4 @@
-import {DBUser} from './user';
+import {DbUser} from './user';
 
 export type DefaultRes = {
     errorMsg?: string;
@@ -11,6 +11,6 @@ export type CreateAccountReq = {
 };
 
 export type CreateAccountRes = {
-    user?: DBUser;
+    user?: DbUser;
     errorMsg?: string;
 };
