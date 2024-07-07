@@ -15,6 +15,8 @@ export const Button = (props: ButtonProps) => {
     const bg: string = disabled ? 'bg-gray-400' : 'bg-red-700';
     const hover: string = disabled ? 'bg-gray-400' : 'bg-red-900';
 
+    const onClick: () => void = disabled ? () => {} : onPress;
+
     return (
         <button
             className={`${bg} hover:${hover} text-white font-bold py-2 px-4 rounded ${
@@ -24,7 +26,7 @@ export const Button = (props: ButtonProps) => {
                     ? 'text-md'
                     : 'text-lg'
             }`}
-            onClick={() => onPress()}
+            onClick={onClick}
             disabled={disabled}>
             {text}
         </button>

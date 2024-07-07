@@ -1,5 +1,11 @@
-import {CreateAccountReq, CreateAccountRes} from '@/types/function-requests';
-import {DbUser} from '@/types/user';
+import {DbUser} from '@/types/db-user';
+import {
+    CreateAccountReq,
+    CreateAccountRes,
+    DefaultRes,
+    JoinGroupReq,
+    LeaveGroupReq,
+} from '@/types/function-requests';
 import {getFunctions, httpsCallable} from '@firebase/functions';
 
 export class FunctionsService {
@@ -28,17 +34,80 @@ export class FunctionsService {
             });
     }
 
-    static async deleteAccount(): Promise<void> {
+    static async deleteAccount(): Promise<DefaultRes> {
         return httpsCallable(getFunctions(), 'deleteAccount')()
             .then(result => {
+                const response = result.data as DefaultRes;
                 console.log(
-                    `Delete account result: ${JSON.stringify(result, null, 2)}`
+                    `Delete account result: ${JSON.stringify(
+                        response,
+                        null,
+                        2
+                    )}`
                 );
+                return response;
             })
             .catch(err => {
+                const errorMsg: string = `Delete account error: ${JSON.stringify(
+                    err,
+                    null,
+                    2
+                )}`;
+
+                console.log(errorMsg);
+                return {errorMsg};
+            });
+    }
+
+    static async joinGroup(groupId: string): Promise<DefaultRes> {
+        const request: JoinGroupReq = {groupId};
+
+        return httpsCallable(
+            getFunctions(),
+            'joinGroup'
+        )(request)
+            .then(result => {
+                const response = result.data as DefaultRes;
                 console.log(
-                    `Delete account error: ${JSON.stringify(err, null, 2)}`
+                    `Join group result: ${JSON.stringify(response, null, 2)}`
                 );
+                return response;
+            })
+            .catch(err => {
+                const errorMsg: string = `Join group error: ${JSON.stringify(
+                    err,
+                    null,
+                    2
+                )}`;
+
+                console.log(errorMsg);
+                return {errorMsg};
+            });
+    }
+
+    static async leaveGroup(groupId: string): Promise<DefaultRes> {
+        const request: LeaveGroupReq = {groupId};
+
+        return httpsCallable(
+            getFunctions(),
+            'leaveGroup'
+        )(request)
+            .then(result => {
+                const response = result.data as DefaultRes;
+                console.log(
+                    `Leave group result: ${JSON.stringify(response, null, 2)}`
+                );
+                return response;
+            })
+            .catch(err => {
+                const errorMsg: string = `Leave group error: ${JSON.stringify(
+                    err,
+                    null,
+                    2
+                )}`;
+
+                console.log(errorMsg);
+                return {errorMsg};
             });
     }
 }

@@ -4,11 +4,12 @@ import {AuthService} from '@/services/firebase/auth-service';
 import {DbService} from '@/services/firebase/db-service';
 import {FunctionsService} from '@/services/firebase/functions-service';
 import '@/styles/globals.css';
-import {DbUser} from '@/types/user';
+import {DbUser} from '@/types/db-user';
+import {Group} from '@/types/group';
 import {FirebaseApp, initializeApp} from '@firebase/app';
 import {UserCredential, getAuth, onAuthStateChanged} from '@firebase/auth';
 import Image from 'next/image';
-import {useMemo, useState} from 'react';
+import {useEffect, useMemo, useState} from 'react';
 import {images} from '../../public/images';
 
 export default function App() {
@@ -59,6 +60,66 @@ export default function App() {
         }
     }, [googleUser]);
 
+    // Control groups
+    const [groups, setGroups] = useState<Group[]>([]);
+    const refreshGroups: () => void = () => {
+        console.log(`Refreshing groups...`);
+        if (!dbUser?.uid) {
+            return;
+        } else {
+            DbService.getCurrentGroups(dbUser.uid)
+                .then(groups => {
+                    console.log(
+                        `Finished refreshing groups, groups: ${JSON.stringify(
+                            groups,
+                            null,
+                            2
+                        )}`
+                    );
+                    setGroups(groups);
+                })
+                .catch(err =>
+                    console.log(
+                        `getCurrentGroups error: ${JSON.stringify(
+                            err,
+                            null,
+                            2
+                        )}`
+                    )
+                );
+        }
+    };
+    useEffect(() => {
+        refreshGroups();
+    }, [dbUser]);
+
+    const renderGroupInfo = () => {
+        if (!dbUser) {
+            return null;
+        }
+
+        return (
+            <div className='flex flex-col items-start gap-4 w-full bg-gray-900 p-10'>
+                <p className='text-lg font-bold'>{`My Groups`}</p>
+                {groups.flatMap(group => (
+                    <div
+                        className='flex flex-row items-center gap-4'
+                        key={group.groupId}>
+                        <p>{group.groupTitle}</p>
+                        <Button
+                            size='sm'
+                            text='Leave Group'
+                            onPress={() => {
+                                FunctionsService.leaveGroup(group.groupId).then(
+                                    refreshGroups
+                                );
+                            }}></Button>
+                    </div>
+                ))}
+            </div>
+        );
+    };
+
     const renderUserContent = () => {
         console.log(`Rendering user content...`);
         if (!googleUser) {
@@ -67,10 +128,10 @@ export default function App() {
         }
 
         return (
-            <section className='flex flex-col items-center gap-2 w-full bg-gray-900 p-10 mt-5'>
+            <section className='flex flex-col items-center gap-6 w-full p-10'>
                 {/* Account Info */}
-                <div className='flex flex-row items-center gap-4 w-full'>
-                    <p className=''>{`Username: ${googleUser.displayName}`}</p>
+                <div className='flex flex-row items-center gap-4 w-full bg-gray-900 p-10'>
+                    <p className='font-bold'>{googleUser.displayName}</p>
                     <div className='flex flex-grow flex-row items-center justify-end'>
                         <DeleteAcctButton />
                         <div className='ml-4'>
@@ -81,7 +142,7 @@ export default function App() {
                         </div>
                     </div>
                 </div>
-                {/* Group Info */}
+                {renderGroupInfo()}
             </section>
         );
     };
@@ -96,7 +157,9 @@ export default function App() {
                     className='sm:w-[50%] md:w-[30%] lg:w-[20%]'
                     priority
                 />
-                <span className='text-2xl mt-10'>{'Spotify Groups'}</span>
+                <span className='text-2xl mt-10 font-bold'>
+                    {'Spotify Groups'}
+                </span>
                 <p className='text-sm mt-4 mb-4'>{'By Jackson Alvarez'}</p>
             </header>
             {googleUser ? (

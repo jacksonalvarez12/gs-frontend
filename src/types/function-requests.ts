@@ -1,4 +1,4 @@
-import {DbUser} from './user';
+import {DbUser} from './db-user';
 
 export type DefaultRes = {
     errorMsg?: string;
@@ -13,4 +13,12 @@ export type CreateAccountReq = {
 export type CreateAccountRes = {
     user?: DbUser;
     errorMsg?: string;
+};
+
+export type JoinGroupReq = {
+    groupId: string;
+};
+
+export type LeaveGroupReq = {
+    groupId: string;
 };
