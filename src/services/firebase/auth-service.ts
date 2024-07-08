@@ -8,20 +8,9 @@ import {
 } from '@firebase/auth';
 
 export class AuthService {
-    static signInWithGoogle = async (): Promise<void> => {
-        return signInWithPopup(getAuth(), new GoogleAuthProvider())
-            .then(result => {
-                if (!result?.user) {
-                    throw Error(
-                        `No user found in result, result: ${JSON.stringify(
-                            result,
-                            null,
-                            2
-                        )}`
-                    );
-                }
-            })
-            .catch(error => {
+    static signInWithGoogle = async (): Promise<unknown> => {
+        return signInWithPopup(getAuth(), new GoogleAuthProvider()).catch(
+            error => {
                 console.log(
                     `Error while signing in with google: ${JSON.stringify(
                         error,
@@ -29,7 +18,8 @@ export class AuthService {
                         2
                     )}`
                 );
-            });
+            }
+        );
     };
 
     static signOut = (): void => {

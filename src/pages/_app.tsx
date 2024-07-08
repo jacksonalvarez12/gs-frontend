@@ -1,15 +1,15 @@
-import {Button} from '@/components/button';
-import {DeleteAcctButton} from '@/components/delete-acct-button';
+import {GroupInfo} from '@/components/group-info';
+import {Button} from '@/components/inputs/button';
+import {DeleteAcctButton} from '@/components/inputs/delete-acct-button';
 import {AuthService} from '@/services/firebase/auth-service';
 import {DbService} from '@/services/firebase/db-service';
 import {FunctionsService} from '@/services/firebase/functions-service';
 import '@/styles/globals.css';
 import {DbUser} from '@/types/db-user';
-import {Group} from '@/types/group';
 import {FirebaseApp, initializeApp} from '@firebase/app';
 import {UserCredential, getAuth, onAuthStateChanged} from '@firebase/auth';
 import Image from 'next/image';
-import {useEffect, useMemo, useState} from 'react';
+import {useMemo, useState} from 'react';
 import {images} from '../../public/images';
 
 export default function App() {
@@ -60,68 +60,7 @@ export default function App() {
         }
     }, [googleUser]);
 
-    // Control groups
-    const [groups, setGroups] = useState<Group[]>([]);
-    const refreshGroups: () => void = () => {
-        console.log(`Refreshing groups...`);
-        if (!dbUser?.uid) {
-            return;
-        } else {
-            DbService.getCurrentGroups(dbUser.uid)
-                .then(groups => {
-                    console.log(
-                        `Finished refreshing groups, groups: ${JSON.stringify(
-                            groups,
-                            null,
-                            2
-                        )}`
-                    );
-                    setGroups(groups);
-                })
-                .catch(err =>
-                    console.log(
-                        `getCurrentGroups error: ${JSON.stringify(
-                            err,
-                            null,
-                            2
-                        )}`
-                    )
-                );
-        }
-    };
-    useEffect(() => {
-        refreshGroups();
-    }, [dbUser]);
-
-    const renderGroupInfo = () => {
-        if (!dbUser) {
-            return null;
-        }
-
-        return (
-            <div className='flex flex-col items-start gap-4 w-full bg-gray-900 p-10'>
-                <p className='text-lg font-bold'>{`My Groups`}</p>
-                {groups.flatMap(group => (
-                    <div
-                        className='flex flex-row items-center gap-4'
-                        key={group.groupId}>
-                        <p>{group.groupTitle}</p>
-                        <Button
-                            size='sm'
-                            text='Leave Group'
-                            onPress={() => {
-                                FunctionsService.leaveGroup(group.groupId).then(
-                                    refreshGroups
-                                );
-                            }}></Button>
-                    </div>
-                ))}
-            </div>
-        );
-    };
-
     const renderUserContent = () => {
-        console.log(`Rendering user content...`);
         if (!googleUser) {
             console.log(`No user in renderUserContent, returning null...`);
             return null;
@@ -132,17 +71,15 @@ export default function App() {
                 {/* Account Info */}
                 <div className='flex flex-row items-center gap-4 w-full bg-gray-900 p-10'>
                     <p className='font-bold'>{googleUser.displayName}</p>
-                    <div className='flex flex-grow flex-row items-center justify-end'>
+                    <div className='flex flex-grow flex-row items-center justify-end gap-4'>
                         <DeleteAcctButton />
-                        <div className='ml-4'>
-                            <Button
-                                onPress={AuthService.signOut}
-                                text={'Sign Out'}
-                            />
-                        </div>
+                        <Button
+                            onPress={AuthService.signOut}
+                            text={'Sign Out'}
+                        />
                     </div>
                 </div>
-                {renderGroupInfo()}
+                <GroupInfo dbUser={dbUser} />
             </section>
         );
     };
