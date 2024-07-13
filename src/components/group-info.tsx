@@ -40,7 +40,7 @@ export const GroupInfo = (props: GroupInfoProps) => {
 
     useEffect(() => {
         refreshGroups();
-    }, [dbUser, refreshGroups]);
+    }, [dbUser]);
 
     const [joinLoading, setJoinLoading] = useState<boolean>(false);
     const [leaveLoading, setLeaveLoading] = useState<boolean>(false);
