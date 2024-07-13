@@ -17,8 +17,11 @@ export const Button = (props: ButtonProps) => {
         ...props,
     };
 
-    const bg: string = loading ? 'red-900' : disabled ? 'gray-400' : 'red-700';
-    const hover: string = loading ? bg : disabled ? 'gray-400' : 'red-900';
+    const bg: string = loading
+        ? 'bg-red-900'
+        : disabled
+        ? 'bg-gray-400'
+        : 'bg-red-700';
 
     const loadingOpacity: string = loading ? 'opacity-0' : 'opacity-100';
 
@@ -26,7 +29,7 @@ export const Button = (props: ButtonProps) => {
 
     return (
         <button
-            className={`bg-${bg} hover:bg-${hover} font-bold py-2 px-4 rounded`}
+            className={`${bg} font-bold py-2 px-4 rounded`}
             onClick={onClick}
             disabled={disabled || loading}>
             <div className='flex flex-col items-center justify-center'>
