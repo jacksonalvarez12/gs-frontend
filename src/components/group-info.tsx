@@ -50,19 +50,20 @@ export const GroupInfo = (props: GroupInfoProps) => {
         return null;
     }
 
-    const divider = (marginTop: number) => {
+    const divider = (marginV: number, smallOnly?: boolean) => {
         return (
             <div
-                className={`w-full h-0.5 bg-gray-500 mt-${
-                    marginTop ?? 0
+                className={`w-full h-0.5 bg-gray-500 my-${marginV ?? 0} ${
+                    smallOnly ? 'lg:hidden' : ''
                 }`}></div>
         );
     };
 
     return (
         <div className='flex flex-col items-start gap-4 w-full bg-gray-900 p-10'>
-            <div className='flex flex-row items-center justify-between w-full'>
-                <p className='text-lg font-bold'>{`My Groups`}</p>
+            <div className='flex sm:flex-col lg:flex-row items-center justify-between w-full'>
+                <p className='text-lg font-bold sm:mb-4 lg:mb-0'>{`My Groups`}</p>
+                {divider(0, true)}
                 <JoinGroupInput
                     onJoinGroup={groupIdInput => {
                         setJoinLoading(true);
@@ -78,7 +79,7 @@ export const GroupInfo = (props: GroupInfoProps) => {
                     <div
                         key={group.groupId}
                         className='flex flex-col w-full gap-4'>
-                        {divider(i === 0 ? 4 : 0)}
+                        {divider(i === 0 ? 2 : 0)}
                         <div className='flex flex-row items-center justify-between w-full'>
                             <p>{group.groupTitle}</p>
                             <Button

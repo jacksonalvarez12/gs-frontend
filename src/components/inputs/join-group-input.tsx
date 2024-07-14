@@ -46,13 +46,16 @@ export const JoinGroupInput = (props: JoinGroupInputProps) => {
     }, [groupIdInput]);
 
     return (
-        <div className='flex flex-row items-center gap-4'>
-            <label htmlFor={'group-id-input'}>{'Group ID'}</label>
+        <div className='flex sm:flex-col lg:flex-row items-center gap-4 lg:ml-4 sm:ml-0 lg:mt-0 sm:mt-4'>
+            <label htmlFor={'group-id-input whitespace-nowrap'}>
+                <p>{'Group ID'}</p>
+            </label>
             <input
                 id={'group-id-input'}
                 type={'text'}
-                className={`${groupIdTextColor} px-2 w-50`}
-                onChange={e => setGroupIdInput(e.target.value)}></input>
+                className={`${groupIdTextColor} px-2 w-30`}
+                onChange={e => setGroupIdInput(e.target.value)}
+            />
             <Button
                 text={'Join Group'}
                 disabled={buttonDisabled}

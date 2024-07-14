@@ -540,6 +540,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/crypto-js@npm:^4":
+  version: 4.2.2
+  resolution: "@types/crypto-js@npm:4.2.2"
+  checksum: 10c0/760a2078f36f2a3a1089ef367b0d13229876adcf4bcd6e8824d00d9e9bfad8118dc7e6a3cc66322b083535e12be3a29044ccdc9603bfb12519ff61551a3322c6
+  languageName: node
+  linkType: hard
+
 "@types/json5@npm:^0.0.29":
   version: 0.0.29
   resolution: "@types/json5@npm:0.0.29"
@@ -1139,6 +1146,13 @@ __metadata:
     shebang-command: "npm:^2.0.0"
     which: "npm:^2.0.1"
   checksum: 10c0/5738c312387081c98d69c98e105b6327b069197f864a60593245d64c8089c8a0a744e16349281210d56835bb9274130d825a78b2ad6853ca13cfbeffc0c31750
+  languageName: node
+  linkType: hard
+
+"crypto-js@npm:^4.2.0":
+  version: 4.2.0
+  resolution: "crypto-js@npm:4.2.0"
+  checksum: 10c0/8fbdf9d56f47aea0794ab87b0eb9833baf80b01a7c5c1b0edc7faf25f662fb69ab18dc2199e2afcac54670ff0cd9607a9045a3f7a80336cccd18d77a55b9fdf0
   languageName: node
   linkType: hard
 
@@ -2146,13 +2160,16 @@ __metadata:
     "@firebase/auth": "npm:^1.7.4"
     "@firebase/firestore": "npm:^4.6.4"
     "@firebase/functions": "npm:^0.11.6"
+    "@types/crypto-js": "npm:^4"
     "@types/node": "npm:^20"
     "@types/react": "npm:^18"
     "@types/react-dom": "npm:^18"
+    crypto-js: "npm:^4.2.0"
     eslint: "npm:^8"
     eslint-config-next: "npm:14.2.4"
     next: "npm:14.2.4"
     postcss: "npm:^8"
+    querystring: "npm:^0.2.1"
     react: "npm:^18"
     react-dom: "npm:^18"
     tailwindcss: "npm:^3.4.1"
@@ -3542,6 +3559,13 @@ __metadata:
   version: 2.3.1
   resolution: "punycode@npm:2.3.1"
   checksum: 10c0/14f76a8206bc3464f794fb2e3d3cc665ae416c01893ad7a02b23766eb07159144ee612ad67af5e84fa4479ccfe67678c4feb126b0485651b302babf66f04f9e9
+  languageName: node
+  linkType: hard
+
+"querystring@npm:^0.2.1":
+  version: 0.2.1
+  resolution: "querystring@npm:0.2.1"
+  checksum: 10c0/6841b32bec4f16ffe7f5b5e4373b47ad451f079cde3a7f45e63e550f0ecfd8f8189ef81fb50079413b3fc1c59b06146e4c98192cb74ed7981aca72090466cd94
   languageName: node
   linkType: hard
 

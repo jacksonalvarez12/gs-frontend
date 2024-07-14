@@ -1,6 +1,7 @@
 import {GroupInfo} from '@/components/group-info';
 import {Button} from '@/components/inputs/button';
 import {DeleteAcctButton} from '@/components/inputs/delete-acct-button';
+import {SpotifyInfo} from '@/components/spotify-info';
 import {AuthService} from '@/services/firebase/auth-service';
 import {DbService} from '@/services/firebase/db-service';
 import {FunctionsService} from '@/services/firebase/functions-service';
@@ -9,10 +10,14 @@ import {DbUser} from '@/types/db-user';
 import {FirebaseApp, initializeApp} from '@firebase/app';
 import {UserCredential, getAuth, onAuthStateChanged} from '@firebase/auth';
 import Image from 'next/image';
+import {useRouter} from 'next/router';
 import {useMemo, useState} from 'react';
 import {images} from '../../public/images';
 
 export default function App() {
+    const router = useRouter();
+    console.log(`Router: ${JSON.stringify(router, null, 2)}`);
+
     const firebaseConfig = {
         apiKey: 'AIzaSyCdISQPxMkzxAMrMx-9Ep8YadXNwFdk6N4',
         authDomain: 'gs-backend-45c97.firebaseapp.com',
@@ -69,9 +74,9 @@ export default function App() {
         return (
             <section className='flex flex-col items-center gap-6 w-full p-10'>
                 {/* Account Info */}
-                <div className='flex flex-row items-center gap-4 w-full bg-gray-900 p-10'>
+                <div className='flex lg:flex-row sm:flex-col items-center gap-4 w-full bg-gray-900 p-10'>
                     <p className='font-bold'>{googleUser.displayName}</p>
-                    <div className='flex flex-grow flex-row items-center justify-end gap-4'>
+                    <div className='flex flex-grow lg:flex-row sm:flex-col items-center justify-end gap-4'>
                         <DeleteAcctButton />
                         <Button
                             onPress={AuthService.signOut}
@@ -80,18 +85,24 @@ export default function App() {
                     </div>
                 </div>
                 <GroupInfo dbUser={dbUser} />
+                <SpotifyInfo
+                    dbUser={dbUser}
+                    routerCode={router?.query?.['code'] as string | undefined}
+                    routerError={router?.query?.['error'] as string | undefined}
+                    routerState={router?.query?.['state'] as string | undefined}
+                />
             </section>
         );
     };
 
     return (
         <main
-            className={`sm:px-[5%] md:px-[10%], lg:px-[17%] flex flex-col items-center mt-10`}>
+            className={`sm:px-[5%] lg:px-[15%] flex flex-col items-center mt-10`}>
             <header className='flex flex-col items-center'>
                 <Image
                     src={images.dawgs}
                     alt='Georgia football logo'
-                    className='sm:w-[50%] md:w-[30%] lg:w-[20%]'
+                    className='sm:w-[50%] lg:w-[25%]'
                     priority
                 />
                 <span className='text-2xl mt-10 font-bold'>
