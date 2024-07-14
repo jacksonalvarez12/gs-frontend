@@ -8,13 +8,15 @@ export type ButtonProps = {
     size?: 'sm' | 'md' | 'lg';
     disabled?: boolean;
     loading?: boolean;
+    style?: string;
 };
 
 export const Button = (props: ButtonProps) => {
-    const {text, onPress, size, disabled, loading, link} = {
+    const {text, onPress, size, disabled, loading, link, style} = {
         size: 'md',
         disabled: false,
         loading: false,
+        style: '',
         ...props,
     };
 
@@ -26,7 +28,7 @@ export const Button = (props: ButtonProps) => {
 
     const loadingOpacity: string = loading ? 'opacity-0' : 'opacity-100';
 
-    const outerStyle: string = `${bg} font-bold py-2 px-4 rounded min-w-34`;
+    const outerStyle: string = `${bg} font-bold py-2 px-4 rounded min-w-34 ${style}`;
 
     if (onPress) {
         const onClick: () => unknown = disabled || loading ? () => {} : onPress;

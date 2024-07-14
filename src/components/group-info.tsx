@@ -81,7 +81,7 @@ export const GroupInfo = (props: GroupInfoProps) => {
                         className='flex flex-col w-full gap-4'>
                         {divider(i === 0 ? 2 : 0)}
                         <div className='flex flex-row items-center justify-between w-full'>
-                            <p>{group.groupTitle}</p>
+                            <p className='mr-2'>{group.groupTitle}</p>
                             <Button
                                 size='sm'
                                 text='Leave Group'
@@ -92,6 +92,7 @@ export const GroupInfo = (props: GroupInfoProps) => {
                                         .finally(() => setLeaveLoading(false));
                                 }}
                                 loading={leaveLoading}
+                                style={'ml-2'}
                             />
                         </div>
                     </div>
