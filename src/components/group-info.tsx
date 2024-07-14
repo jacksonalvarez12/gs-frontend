@@ -84,7 +84,7 @@ export const GroupInfo = (props: GroupInfoProps) => {
                             <p className='mr-2'>{group.groupTitle}</p>
                             <Button
                                 size='sm'
-                                text='Leave Group'
+                                text='Leave'
                                 onPress={() => {
                                     setLeaveLoading(true);
                                     FunctionsService.leaveGroup(group.groupId)
@@ -98,7 +98,7 @@ export const GroupInfo = (props: GroupInfoProps) => {
                     </div>
                 ))
             ) : (
-                <div className='flex flex-col items-start'>
+                <div className='flex flex-col items-center w-full'>
                     <p>{'You are not in any groups.'}</p>
                     <p>{'Join one now!'}</p>
                 </div>
