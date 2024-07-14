@@ -5,6 +5,7 @@ import {
     DefaultRes,
     JoinGroupReq,
     LeaveGroupReq,
+    ProvideSpotifyAuthCodeReq,
 } from '@/types/function-requests';
 import {getFunctions, httpsCallable} from '@firebase/functions';
 
@@ -101,6 +102,36 @@ export class FunctionsService {
             })
             .catch(err => {
                 const errorMsg: string = `Leave group error: ${JSON.stringify(
+                    err,
+                    null,
+                    2
+                )}`;
+
+                console.log(errorMsg);
+                return {errorMsg};
+            });
+    }
+
+    static async provideSpotifyAuthCode(authCode: string): Promise<DefaultRes> {
+        const request: ProvideSpotifyAuthCodeReq = {authCode};
+
+        return httpsCallable(
+            getFunctions(),
+            'provideSpotifyAuthCode'
+        )(request)
+            .then(result => {
+                const response = result.data as DefaultRes;
+                console.log(
+                    `Provide spotify auth code result: ${JSON.stringify(
+                        response,
+                        null,
+                        2
+                    )}`
+                );
+                return response;
+            })
+            .catch(err => {
+                const errorMsg: string = `Provide spotify auth code error: ${JSON.stringify(
                     err,
                     null,
                     2

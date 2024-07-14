@@ -47,7 +47,7 @@ export const JoinGroupInput = (props: JoinGroupInputProps) => {
 
     return (
         <div className='flex sm:flex-col lg:flex-row items-center gap-4 lg:ml-4 sm:ml-0 lg:mt-0 sm:mt-4'>
-            <label htmlFor={'group-id-input whitespace-nowrap'}>
+            <label htmlFor={'group-id-input'}>
                 <p>{'Group ID'}</p>
             </label>
             <input

@@ -16,7 +16,6 @@ import {images} from '../../public/images';
 
 export default function App() {
     const router = useRouter();
-    console.log(`Router: ${JSON.stringify(router, null, 2)}`);
 
     const firebaseConfig = {
         apiKey: 'AIzaSyCdISQPxMkzxAMrMx-9Ep8YadXNwFdk6N4',
@@ -53,12 +52,12 @@ export default function App() {
                 setDbUser(dbUser);
             } else {
                 // Create Account Flow
-                const newDbUser: DbUser | undefined =
-                    await FunctionsService.createAccount(
-                        googleUser.displayName || 'Empty Name',
-                        googleUser.email || 'Empty Email'
-                    );
-                setDbUser(newDbUser);
+                FunctionsService.createAccount(
+                    googleUser.displayName || 'Empty Name',
+                    googleUser.email || 'Empty Email'
+                ).then(newDbUser => {
+                    setDbUser(newDbUser);
+                });
             }
         } else {
             setDbUser(undefined);
@@ -87,9 +86,12 @@ export default function App() {
                 <GroupInfo dbUser={dbUser} />
                 <SpotifyInfo
                     dbUser={dbUser}
+                    setDbUser={(newDbUser: DbUser | undefined) =>
+                        setDbUser(newDbUser)
+                    }
                     routerCode={router?.query?.['code'] as string | undefined}
-                    routerError={router?.query?.['error'] as string | undefined}
                     routerState={router?.query?.['state'] as string | undefined}
+                    routerError={router?.query?.['error'] as string | undefined}
                 />
             </section>
         );

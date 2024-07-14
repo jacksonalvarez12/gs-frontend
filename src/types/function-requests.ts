@@ -22,3 +22,7 @@ export type JoinGroupReq = {
 export type LeaveGroupReq = {
     groupId: string;
 };
+
+export type ProvideSpotifyAuthCodeReq = {
+    authCode: string;
+};
