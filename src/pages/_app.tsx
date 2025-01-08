@@ -18,13 +18,7 @@ export default function App() {
     const router = useRouter();
 
     const firebaseConfig = {
-        apiKey: 'AIzaSyCdISQPxMkzxAMrMx-9Ep8YadXNwFdk6N4',
-        authDomain: 'gs-backend-45c97.firebaseapp.com',
-        projectId: 'gs-backend-45c97',
-        storageBucket: 'gs-backend-45c97.appspot.com',
-        messagingSenderId: '787677052387',
-        appId: '1:787677052387:web:b7f0981c21448c768834d6',
-        measurementId: 'G-89EQLS6BFK',
+        // Insert firebase config here
     };
 
     // Initialize Firebase
